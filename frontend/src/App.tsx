@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { Greet } from "../wailsjs/go/main/App";
+import { GetDevicesIp } from "../wailsjs/go/main/App";
 import { Button, TextInput } from "@tremor/react";
 
 function App() {
   const [resultText, setResultText] = useState(
-    "Please enter your name below 👇"
+    "Please enter your IP address below 👇"
   );
-  const [name, setName] = useState("");
-  const updateName = (e: any) => setName(e.target.value);
+  const [ip, setIp] = useState("");
+  const updateIp = (e: any) => setIp(e.target.value);
   const updateResultText = (result: string) => setResultText(result);
 
-  async function greet() {
-    const result = await Greet(name);
+  async function getDevicesIp() {
+    const result = await GetDevicesIp(ip);
     updateResultText(result);
   }
 
@@ -19,8 +19,8 @@ function App() {
     <div className="flex flex-col items-center justify-center h-screen p-4">
       <div className="text-xl font-bold mb-4">{resultText}</div>
       <div className="flex flex-row gap-2 mb-4">
-        <TextInput onChange={updateName} placeholder="Enter your name" />
-        <Button onClick={greet}>Greet</Button>
+        <TextInput onChange={updateIp} placeholder="Enter IP address" />
+        <Button onClick={getDevicesIp}>Check Device</Button>
       </div>
     </div>
   );
