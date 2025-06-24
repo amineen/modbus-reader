@@ -1,5 +1,4 @@
 import { useState } from "react";
-import logo from "./assets/images/logo-universal.png";
 import { Greet } from "../wailsjs/go/main/App";
 import { Button, TextInput } from "@tremor/react";
 
@@ -16,12 +15,9 @@ function App() {
   }
 
   return (
-    <div id="App">
-      <img src={logo} id="logo" alt="logo" />
-      <div id="result" className="result">
-        {resultText}
-      </div>
-      <div className="flex flex-row gap-2">
+    <div className="flex flex-col items-center justify-center h-screen p-4">
+      <div className="text-xl font-bold mb-4">{resultText}</div>
+      <div className="flex flex-row gap-2 mb-4">
         <TextInput onChange={updateName} placeholder="Enter your name" />
         <Button onClick={greet}>Greet</Button>
       </div>
