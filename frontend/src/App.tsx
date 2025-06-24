@@ -4,7 +4,7 @@ import { Button, TextInput } from "@tremor/react";
 
 function App() {
   const [resultText, setResultText] = useState(
-    "Please enter your IP address below 👇"
+    "Please enter your IP address below"
   );
   const [ip, setIp] = useState("");
   const updateIp = (e: any) => setIp(e.target.value);
@@ -20,7 +20,7 @@ function App() {
       <div className="text-xl font-bold mb-4">{resultText}</div>
       <div className="flex flex-row gap-2 mb-4">
         <TextInput onChange={updateIp} placeholder="Enter IP address" />
-        <Button onClick={getDevicesIp}>Check Device</Button>
+        <Button onClick={getDevicesIp}>Connect Device</Button>
       </div>
     </div>
   );
