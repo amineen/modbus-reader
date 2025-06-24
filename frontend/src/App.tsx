@@ -10,8 +10,9 @@ function App() {
   const updateName = (e: any) => setName(e.target.value);
   const updateResultText = (result: string) => setResultText(result);
 
-  function greet() {
-    Greet(name).then(updateResultText);
+  async function greet() {
+    const result = await Greet(name);
+    updateResultText(result);
   }
 
   return (
