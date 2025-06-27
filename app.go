@@ -9,6 +9,11 @@ type App struct {
 	ctx context.Context
 }
 
+type Device struct {
+	Ip   string
+	Port string
+}
+
 // NewApp creates a new App application struct
 func NewApp() *App {
 	return &App{}
@@ -20,6 +25,6 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) GetDevicesIp(ip string) string {
-	return ip
+func (a *App) GetDevicesIp(ip string, port string) Device {
+	return Device{Ip: ip, Port: port}
 }
