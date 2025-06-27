@@ -35,7 +35,7 @@ func (a *App) GetDevicesIp(ip string, port string) Device {
 	return Device{Ip: ip, Port: port}
 }
 
-func (a *App) ReadHoldingRegisters(address uint16, quantity uint16) ([]uint16, error) {
+func (a *App) ReadHoldingRegisters(address uint16, quantity uint16) ([]int16, error) {
 	// Use the stored IP and port
 	modbusService := pkg.NewModbusService(a.ip, a.port)
 	return modbusService.ReadHoldingRegisters(address, quantity)
