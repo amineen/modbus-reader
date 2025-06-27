@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"modbus/pkg"
 )
 
@@ -15,6 +16,11 @@ type App struct {
 type Device struct {
 	Ip   string
 	Port string
+}
+
+type RegisterValue struct {
+	Register uint16
+	Value    int16
 }
 
 // NewApp creates a new App application struct
@@ -39,4 +45,25 @@ func (a *App) ReadHoldingRegisters(address uint16, quantity uint16) ([]int16, er
 	// Use the stored IP and port
 	modbusService := pkg.NewModbusService(a.ip, a.port)
 	return modbusService.ReadHoldingRegisters(address, quantity)
+}
+
+func (a *App) ComputeFloat32(registerValues []RegisterValue) ([]pkg.ModbusReading, error) {
+	var readings []pkg.ModbusReading
+	if len(registerValues) < 2 {
+		return readings, nil // Not enough data for a float32
+	}
+	for i := 0; i+1 < len(registerValues); i += 2 {
+		lsr := registerValues[i].Value
+		msr := registerValues[i+1].Value
+		regPair :=
+			fmt.Sprintf("%d/%d", registerValues[i].Register, registerValues[i+1].Register)
+		val := pkg.DecodeFloat32(lsr, msr)
+		readings = append(readings, pkg.ModbusReading{
+			RegisterPair: regPair,
+			LSR:          lsr,
+			MSR:          msr,
+			Value:        val,
+		})
+	}
+	return readings, nil
 }

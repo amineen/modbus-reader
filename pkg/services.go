@@ -6,10 +6,10 @@ import (
 )
 
 type ModbusReading struct {
-	Register string  `json:"register"`
-	LSR      int16   `json:"LSR"`
-	MSR      int16   `json:"MSR"`
-	Value    float32 `json:"value"`
+	RegisterPair string `json:"register_pair"`
+	LSR          int16
+	MSR          int16
+	Value        float32
 }
 
 func DecodeFloat32(lsr int16, msr int16) float32 {
