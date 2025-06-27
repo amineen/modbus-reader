@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { GetDevicesIp, ReadHoldingRegisters } from "../wailsjs/go/main/App";
-import { Button, TextInput, Table, Card } from "@tremor/react";
+import { Card } from "@tremor/react";
+import IpForm from "./IpForm";
+import AddressForm from "./AddressForm";
+import ReadingTable from "./ReadingTable";
 
 function App() {
   const [resultText, setResultText] = useState(
@@ -14,9 +17,12 @@ function App() {
   const [readings, setReadings] = useState<number[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
 
-  const updateIp = (e: any) => setIp(e.target.value);
-  const updatePort = (e: any) => setPort(e.target.value);
+  const updateIp = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setIp(e.target.value);
+  const updatePort = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPort(e.target.value);
   const updateResultText = (result: string) => setResultText(result);
 
   async function getDevicesIp() {
@@ -29,6 +35,7 @@ function App() {
     setLoading(true);
     setError("");
     setReadings(null);
+    setPage(1);
     try {
       const start = parseInt(startRegister, 10);
       const qty = parseInt(quantity, 10);
@@ -50,73 +57,38 @@ function App() {
     <div className="flex flex-col items-center justify-center h-screen p-4">
       <div className="text-xl font-bold mb-4">{resultText}</div>
       {!isConnected ? (
-        <div className="flex flex-row gap-2 mb-4">
-          <TextInput
-            className="flex-1 w-full"
-            onChange={updateIp}
-            placeholder="Enter IP address"
-          />
-          <TextInput
-            className="flex-0 w-12"
-            onChange={updatePort}
-            placeholder="Enter Port"
-            value={port}
-          />
-          <Button
-            className="flex-0"
-            onClick={getDevicesIp}
-            disabled={ip === "" || port === ""}
-          >
-            Connect Device
-          </Button>
-        </div>
+        <IpForm
+          ip={ip}
+          port={port}
+          onIpChange={updateIp}
+          onPortChange={updatePort}
+          onConnect={getDevicesIp}
+          disabled={ip === "" || port === ""}
+        />
       ) : (
         <Card className="w-full max-w-md p-4">
           <div className="flex flex-col gap-4">
-            <div className="flex flex-row gap-2">
-              <TextInput
-                className="flex-1"
-                placeholder="Starting Register"
-                value={startRegister}
-                onChange={(e) => setStartRegister(e.target.value)}
-                type="number"
-                min={0}
-              />
-              <TextInput
-                className="flex-1"
-                placeholder="Quantity"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                type="number"
-                min={1}
-              />
-              <Button
-                className="flex-0"
-                onClick={handleReadRegisters}
-                loading={loading}
-                disabled={loading || startRegister === "" || quantity === ""}
-              >
-                Read
-              </Button>
-            </div>
+            <AddressForm
+              startRegister={startRegister}
+              quantity={quantity}
+              onStartChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setStartRegister(e.target.value)
+              }
+              onQuantityChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setQuantity(e.target.value)
+              }
+              onRead={handleReadRegisters}
+              loading={loading}
+              disabled={loading || startRegister === "" || quantity === ""}
+            />
             {error && <div className="text-red-500 text-sm">{error}</div>}
             {readings && (
-              <Table className="mt-4">
-                <thead>
-                  <tr>
-                    <th>Register</th>
-                    <th>Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {readings.map((val, idx) => (
-                    <tr key={idx}>
-                      <td>{parseInt(startRegister, 10) + idx}</td>
-                      <td>{val}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+              <ReadingTable
+                readings={readings}
+                startRegister={startRegister}
+                page={page}
+                setPage={setPage}
+              />
             )}
           </div>
         </Card>
