@@ -5,3 +5,7 @@
 export function GetDevicesIp(arg1, arg2) {
   return window['go']['main']['App']['GetDevicesIp'](arg1, arg2);
 }
+
+export function ReadHoldingRegisters(arg1, arg2) {
+  return window['go']['main']['App']['ReadHoldingRegisters'](arg1, arg2);
+}

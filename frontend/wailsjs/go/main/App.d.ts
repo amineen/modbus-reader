@@ -3,3 +3,5 @@
 import {main} from '../models';
 
 export function GetDevicesIp(arg1:string,arg2:string):Promise<main.Device>;
+
+export function ReadHoldingRegisters(arg1:number,arg2:number):Promise<Array<number>>;

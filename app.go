@@ -2,11 +2,14 @@ package main
 
 import (
 	"context"
+	"modbus/pkg"
 )
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx  context.Context
+	ip   string
+	port string
 }
 
 type Device struct {
@@ -26,5 +29,14 @@ func (a *App) startup(ctx context.Context) {
 }
 
 func (a *App) GetDevicesIp(ip string, port string) Device {
+	// Store the values in the App struct
+	a.ip = ip
+	a.port = port
 	return Device{Ip: ip, Port: port}
+}
+
+func (a *App) ReadHoldingRegisters(address uint16, quantity uint16) ([]uint16, error) {
+	// Use the stored IP and port
+	modbusService := pkg.NewModbusService(a.ip, a.port)
+	return modbusService.ReadHoldingRegisters(address, quantity)
 }
