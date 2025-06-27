@@ -22,7 +22,7 @@ func (s *ModbusService) ReadHoldingRegisters(address uint16, quantity uint16) ([
 	handler := modbus.NewTCPClientHandler(fmt.Sprintf("%s:%s", s.ip, s.port))
 	handler.SlaveId = 1
 	handler.Timeout = 5 * time.Second
-	handler.IdleTimeout = 20 * time.Second
+	handler.IdleTimeout = 30 * time.Minute
 	handler.Logger = log.New(os.Stdout, "modbus: ", log.LstdFlags)
 
 	err := handler.Connect()
