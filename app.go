@@ -56,7 +56,7 @@ func (a *App) ComputeFloat32(registerValues []RegisterValue) ([]pkg.ModbusReadin
 		lsr := registerValues[i].Value
 		msr := registerValues[i+1].Value
 		regPair :=
-			fmt.Sprintf("%d/%d", registerValues[i].Register, registerValues[i+1].Register)
+			fmt.Sprintf("%d/%d", registerValues[i].Register+1, registerValues[i+1].Register+1)
 		val := pkg.DecodeFloat32(lsr, msr)
 		readings = append(readings, pkg.ModbusReading{
 			RegisterPair: regPair,

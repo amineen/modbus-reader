@@ -40,7 +40,7 @@ const ReadingTable = ({
           {paginatedReadings.map((val: number, idx: number) => (
             <TableRow key={idx} className="py-1">
               <TableCell>
-                {parseInt(startRegister, 10) + (page - 1) * pageSize + idx}
+                {parseInt(startRegister, 10) + (page - 1) * pageSize + idx + 1}
               </TableCell>
               <TableCell>{val}</TableCell>
             </TableRow>
